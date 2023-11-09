@@ -1,9 +1,7 @@
-from sys import getsizeof
 from enum import Enum
 from datetime import datetime
 from dataclasses import dataclass
-import array
-from typing import MutableSequence, Optional, TypeVar, List
+from typing import List, Optional
 
 
 class SizeException(TypeError):
@@ -11,10 +9,7 @@ class SizeException(TypeError):
         super(SizeException, self).__init__(args, kwargs)
 
 
-arr = array.array("b")
-
-
-class DogBreed(Enum):
+class EDogBreed(Enum):
     DOBERMAN = "doberman"
     DASCHUND = "daschund"
     BEAGLE = "beagle"
@@ -26,7 +21,7 @@ class DogBreed(Enum):
 @dataclass
 class Dog:
     name: str
-    breed: DogBreed
+    breed: EDogBreed
     date_released: datetime
     date_adopted: datetime
 
@@ -41,12 +36,15 @@ class ArrayBuffer:
 
     @property
     def size(self) -> int:
-        return self.size
+        return self._size
 
-    def __getitem__(self, index: int, offset: int = 0) -> Optional[bytearray]:
-        if index > self._size - 1:
-            return None
-        return self._array[index : index + offset]
+    def __getitem__(self, index: int | slice) -> Optional[List[int] | int]:
+        if isinstance(index, slice):
+            return [self._array[i] for i in range(*index.indices(len(self._array)))]
+        elif isinstance(index, int):
+            if index > self._size - 1:
+                return None
+            return self._array[index]
 
     # switch to using append?
     def __setitem__(self, index: int, value: int, offset: int = 0):
@@ -84,13 +82,16 @@ class ArrayBuffer:
 
 @dataclass
 class UInt8Array:
-    def __init__(self, buf: ArrayBuffer[int]):
+    _offset = 8
+    _boundary = 255
+
+    def __init__(self, buf: ArrayBuffer):
         self._buffer = buf
         # should we throw an error if not divisible by 8?
-        self._size = buf.size // 8
+        self._size = buf.size // self._offset
 
     @property
-    def buffer(self) -> ArrayBuffer[int]:
+    def buffer(self) -> ArrayBuffer:
         if self._buffer is None:
             raise ValueError("")
         return self._buffer
@@ -100,17 +101,20 @@ class UInt8Array:
         return self._size
 
     def append(self, value: int):
-        if value > 256:
+        if value > self._boundary:
             raise SizeException("Value provided isn't supported")
         if value < 0:
             value = (-1 * value) % 256  # wrap around the u8 boundary
         self._buffer.append(value)
 
     def __getitem__(self, index) -> Optional[int]:
-        bytes = self.buffer.__getitem__(index, 0)
+        bytes = self.buffer[index:index+self._offset:self._offset]
         if bytes is None:
             raise SizeException("Value returned from buffer is nil")
-        return int.from_bytes(bytes, byteorder="big", signed=False)
+        if isinstance(bytes, int):
+            return bytes
+        else:
+            return int.from_bytes(bytes, byteorder="big", signed=False)
 
     # switch to using append?
     def __setitem__(self, index: int, value: int):
@@ -118,10 +122,17 @@ class UInt8Array:
             raise IndexError("ArrayBuffer cannot index negative values")
         if index - 1 > self.size:
             raise IndexError("Attempt to index a value larger than size")
-        # self._array[index] = value
+        # convert integer into array of bytes
+        new_value = [ \
+                (value >> (self._offset*i)) \
+                    &0xff for i in range(2,-1,-1) \
+                ]
+        for idx, value in enumerate(new_value):
+            self.buffer[index + idx] = value
 
 
 arr = ArrayBuffer(8)
 
 u8_arr = UInt8Array(arr)
 print(u8_arr)
+
