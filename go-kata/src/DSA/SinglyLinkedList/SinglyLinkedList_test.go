@@ -3,7 +3,7 @@ package singlylinkedlist
 import (
 	"testing"
 
-	dsa "github.com/nacknime-official/kata-machine-go/src/DSA"
+	dsa "github.com/quillee/algo-rhytms/go-kata/src/DSA"
 )
 
 func TestSinglyLinkedList(t *testing.T) {
