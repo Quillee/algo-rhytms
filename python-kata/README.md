@@ -62,14 +62,23 @@ Project structure might look a bit strange (why in the world queue and stack imp
 - *pyproject.toml*: package dependencies are stored here and managed py [Poetry](https://python-poetry.org/)
 
 # How to use it
+1. Install poetry using homebrew or pipx
 
-1. Install all the required packages. In this project all the python dependencies are managed by [Poetry](https://python-poetry.org/) and are stored in "pyproject.toml" file (in this file also specified required version of python). After `poetry` is installed and virtual environment is created (in case you don't want poetry to create it [automatically](https://python-poetry.org/docs/configuration/#virtualenvscreate)), run:
+    ```bash
+    brew install poetry
+    ```
+
+    ```bash
+    pipx install poetry
+    ```
+
+2. Install all the required packages. In this project all the python dependencies are managed by [Poetry](https://python-poetry.org/) and are stored in "pyproject.toml" file (in this file also specified required version of python). After `poetry` is installed and virtual environment is created (in case you don't want poetry to create it [automatically](https://python-poetry.org/docs/configuration/#virtualenvscreate)), run:
 
     ```bash
     poetry install
     ```
 
-2. Implement an algorithm and run tests:
+3. Implement an algorithm and run tests:
 
     - To run all tests:
 
@@ -89,36 +98,3 @@ Project structure might look a bit strange (why in the world queue and stack imp
         pytest -m search
         ```
 
-## Answers
-
-In the `main` branch there are only empty bodies of classes and functions, without implementation.
-
-Stuck and have no idea what to do? You can check my implementation in the `answers` branch. </br> But try to do it as minimal as possible: the more you do on your own (even if it hurts :persevere:) the better you are gonna understand algorithms.
-
-# Want to participate in development?
-
-Install all packages required for development:
-
-```bash
-poetry install --with dev
-```
-
-## Additional: pre-commit hooks
-
-> **Note**: it is recommended for development, because there is a github workflow that executes all the steps from pre-commit anyway, so if you install you will not be surprised why there is a red cross on your PR. Of course if you fill lucky you can skip it :smile:
-
-In order to install pre-commit hooks run:
-
-```bash
-pre-commit install
-```
-
-Pre-commit hooks will be executed before each commit. In addition all the pre-commit hooks will be run per each PR via github-workflow (no need to add or change anything).
-
-The list of all hooks one can find in a config fils: `.pre-commit-config.yaml`
-
-**Note**: for the sake of speed pre-commit hooks will be executed only on changed files. If it's needed to run on all files execute:
-
-```bash
-pre-commit run --all-files
-```
