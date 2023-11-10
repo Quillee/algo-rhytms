@@ -6,10 +6,10 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/nacknime-official/kata-machine-go/internal/config"
-	"github.com/nacknime-official/kata-machine-go/internal/day"
-	"github.com/nacknime-official/kata-machine-go/internal/generate"
-	"github.com/nacknime-official/kata-machine-go/internal/gotest"
+    "github.com/quillee/algo-rhytms/go-kata/internal/config"
+    "github.com/quillee/algo-rhytms/go-kata/internal/day"
+    "github.com/quillee/algo-rhytms/go-kata/internal/generate"
+    "github.com/quillee/algo-rhytms/go-kata/internal/gotest"
 )
 
 func main() {

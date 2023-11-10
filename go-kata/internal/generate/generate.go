@@ -2,8 +2,8 @@ package generate
 
 import (
 	"fmt"
-	"github.com/nacknime-official/kata-machine-go/internal/day"
-	"github.com/nacknime-official/kata-machine-go/internal/dsa"
+    "github.com/quillee/algo-rhytms/go-kata/internal/day"
+    "github.com/quillee/algo-rhytms/go-kata/internal/dsa"
 )
 
 func Generate(DSAs []string) error {

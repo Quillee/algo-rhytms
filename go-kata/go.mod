@@ -1,9 +1,10 @@
-module github.com/nacknime-official/kata-machine-go
+module github.com/quillee/algo-rhytms/go-kata
 
-go 1.20
+go 1.21.3
 
 require (
-	github.com/stretchr/testify v1.8.2
+	github.com/nacknime-official/kata-machine-go v0.0.0-20230426070038-612588caece6
+	github.com/stretchr/testify v1.8.4
 	gopkg.in/yaml.v3 v3.0.1
 )
 
