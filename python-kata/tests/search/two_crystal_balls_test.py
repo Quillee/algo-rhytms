@@ -11,6 +11,8 @@ class TestTwoCrystalBalls:
     # ----------------------------------------------------------------
     # ----------------------- sqrt(n) solution -----------------------
     # ----------------------------------------------------------------
+    _result = -2
+    _expects= -2
 
     @pytest.mark.skipif(is_empty_function(two_crystal_balls), reason="non implemented function two_crystal_balls")
     @pytest.mark.parametrize("size", [1, 100, 10000, *random.sample(range(1, 10000), 10)])
@@ -19,8 +21,12 @@ class TestTwoCrystalBalls:
         idx = random.randint(0, size - 1)
         data = [False] * idx + [True] * (size - idx)
 
+
         # When
         result = two_crystal_balls(data)
+        self._data = data
+        self._result = result
+        self._expects = idx
 
         # Then
         assert result == idx
@@ -33,6 +39,9 @@ class TestTwoCrystalBalls:
 
         # When
         result = two_crystal_balls(data)
+        self._data = data
+        self._result = result
+        self._expects = -1
 
         # Then
         assert result == -1
@@ -53,6 +62,9 @@ class TestTwoCrystalBalls:
 
         # When
         result = two_crystal_balls_logn(data)
+        self._data = data
+        self._result = result
+        self._expects = idx
 
         # Then
         assert result == idx
@@ -69,5 +81,13 @@ class TestTwoCrystalBalls:
         # When
         result = two_crystal_balls_logn(data)
 
+        self._data = data
+        self._result = result
+        self._expects = -1
+
         # Then
         assert result == -1
+
+    def __repr__(self):
+        return f'Expected: {self._expects} =? Actual: {self._result} | Data: {self._data}'
+
